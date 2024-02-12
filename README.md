@@ -1,5 +1,5 @@
 # DBMS-Group-Project-01
-Credit also Goes to :
+Credit Goes to :
       2022580 Vishal Kumar Mauyra
       2022551 Utkarsh Dhilliwal
       2022536 Tarandeep Singh
