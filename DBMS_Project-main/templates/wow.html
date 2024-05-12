@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Page</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to left, #6e3ea5, #44778f);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .container {
+        width: 400px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    .header {
+        background-color: #ff7e5f;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+    }
+    .options {
+        display: flex;
+        justify-content: center;
+    }
+    .option {
+        flex: 1;
+        padding: 20px;
+        cursor: pointer;
+        text-align: center;
+        transition: background-color 0.3s;
+    }
+    .option.selected {
+        background-color: #ffaf9f;
+        font-weight: bold;
+    }
+    .option:hover {
+        background-color: #ffaf9f;
+    }
+    .form-container {
+        padding: 20px;
+        display: none;
+    }
+    .form-container.active {
+        display: block;
+        animation: slideIn 0.5s ease-in-out;
+    }
+    @keyframes slideIn {
+        0% {
+            transform: translateX(100%);
+        }
+        100% {
+            transform: translateX(0);
+        }
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    input[type="text"],
+    input[type="password"] {
+        width: calc(100% - 20px);
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        margin-right: 10px;
+        display: inline-block;
+    }
+    button {
+        background-color: #ff7e5f;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        display: block;
+        margin: 0 auto;
+    }
+    button:hover {
+        background-color: #ffaf9f;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h2>Login Page</h2>
+        <div id="selectedRole"></div>
+    </div>
+    <div class="options">
+        <div class="option" onclick="showForm('admin')">Admin</div>
+        <div class="option" onclick="showForm('customer')">Customer</div>
+        <div class="option" onclick="showForm('vendor')">Vendor</div> <!-- Added vendor option -->
+    </div>
+    <div id="adminForm" class="form-container">
+        <form method="post" action="/login">
+            <!-- <div class="form-group"> -->
+                <label for="adminUsername">Username:</label>
+                <input type="text" id="adminUsername" name="adminUsername" placeholder="Enter your username">
+            <!-- </div> --> 
+            <!-- <div class="form-group"> -->
+                <label for="adminPassword">Password:</label>
+                <input type="password" id="adminPassword" name="adminPassword" placeholder="Enter your password">
+            <!-- </div> -->
+            <button type="submit">Login as Admin</button>
+            {% if error %}
+            <div class="error">{{ error }}</div>
+            {% endif %}
+        </form>
+    </div>
+    <div id="customerForm" class="form-container">
+        <form method="post" action="/login">
+            <div class="form-group">
+                <label for="customerUsername">Username:</label>
+                <input type="text" id="customerUsername" name="customerUsername" placeholder="Enter your username">
+            </div>
+            <div class="form-group">
+                <label for="customerPassword">Password:</label>
+                <input type="password" id="customerPassword" name="customerPassword" placeholder="Enter your password">
+            </div>
+            <button type="submit" onclick="Toshop()">Login as Customer</button>
+        </form>
+    </div>
+    <div id="vendorForm" class="form-container"> <!-- Added vendor form -->
+        <form method="post" action="/login">
+            <div class="form-group">
+                <label for="vendorUsername">Username:</label>
+                <input type="text" id="vendorUsername" name="vendorUsername" placeholder="Enter your username">
+            </div>
+            <div class="form-group">
+                <label for="vendorPassword">Password:</label>
+                <input type="password" id="vendorPassword" name="vendorPassword" placeholder="Enter your password">
+            </div>
+            <button type="submit" onclick="ToVendor()">Login as Vendor</button>
+        </form>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function showForm(role) {
+        $.ajax({
+                    type: "POST",
+                    url: "/button_click",  // Flask route for handling button click
+                    data: {
+                        role
+                    },
+                    success: function(response) {
+                        // Handle the response from the Flask backend
+                        console.log(response);
+                    }
+                })
+        if (role === 'admin') {
+            document.getElementById('adminForm').classList.add('active');
+            document.getElementById('customerForm').classList.remove('active');
+            document.getElementById('vendorForm').classList.remove('active');
+        } else if (role === 'customer') {
+
+            document.getElementById('adminForm').classList.remove('active');
+            document.getElementById('customerForm').classList.add('active');
+            document.getElementById('vendorForm').classList.remove('active');
+        } else if (role === 'vendor') {
+            document.getElementById('adminForm').classList.remove('active');
+            document.getElementById('customerForm').classList.remove('active');
+            document.getElementById('vendorForm').classList.add('active');
+        }
+    }
+    function Toshop() {
+        window.location.href = 'shop.html';
+    }
+
+    function ToVendor() { // Function to redirect to vendor page
+        window.location.href = 'vendor.html';
+    }
+</script>
+</body>
+</html>

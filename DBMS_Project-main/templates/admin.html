@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Page</title>
+<style>
+    /* Styles for header, buttons, etc. */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to left, #6e3ea5, #44778f);
+        color: #333;
+    }
+    .header {
+        background-color: #333;
+        color: #fff;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .logo {
+        font-size: 24px;
+    }
+    .user-icon {
+        cursor: pointer;
+        font-size: 20px;
+    }
+    .home-button {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .home-button:hover {
+        background-color: #555;
+    }
+    /* Styles for admin options */
+    .admin-options {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+    .admin-option {
+        background-color: #fff;
+        padding: 20px;
+        margin: 10px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+    .admin-option:hover {
+        transform: scale(1.05);
+    }
+    /* Styles for tables */
+    .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #fff;
+        margin-top: 20px;
+        animation: slideFromBottom 0.5s ease forwards;
+        display: none;
+    }
+    .admin-table.active {
+        display: table;
+    }
+    .admin-table td, .admin-table th {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    .admin-table th {
+        background-color: #f2f2f2;
+    }
+    .search-container {
+    margin-bottom: 20px; /* Adjust margin as needed */
+    }
+    #searchInput {
+        width: 100%; /* Full width */
+        padding: 10px; /* Padding around the input */
+        border: 1px solid #ccc; /* Border */
+        border-radius: 5px; /* Rounded corners */
+        box-sizing: border-box; /* Box sizing to include padding and border */
+        font-size: 16px; /* Font size */
+        background-color: #f8f8f8; /* Background color */
+    }
+
+    /* Style for the search input on focus */
+    #searchInput:focus {
+        outline: none; /* Remove outline */
+        border-color: #333; /* Border color on focus */
+    }
+    .search-container button {
+    padding: 10px 15px; /* Padding around the button */
+    border: 1px solid #ccc; /* Border */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #f8f8f8; /* Background color */
+    cursor: pointer; /* Cursor style */
+    }
+
+    /* Style for the search button on hover */
+    .search-container button:hover {
+        background-color: #ddd; /* Background color on hover */
+    }
+    /* Animation */
+    @keyframes slideFromBottom {
+        from {
+            transform: translateY(100%);
+        }
+        to {
+            transform: translateY(0);
+        }
+    }
+</style>
+</head>
+<body>
+<div class="header">
+    <div class="home-button" onclick="goToHomePage()">Home</div>
+    <div class="logo">Admin Page</div>
+    <div class="user-icon" onclick="toggleUserInfo()">👤</div>
+</div>
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search for data...">
+    <button onclick="searchit()">Search</button>
+</div>
+<div class="admin-options">
+    <!-- Pass the data directly to the displayData function -->
+    <div class="admin-option" onclick="displayData('dataTable0')">Manage Customers</div>
+    <div class="admin-option" onclick="displayData('dataTable1')">Manage Vendors</div>
+    <div class="admin-option" onclick="displayData('dataTable2')">Manage Products</div>
+</div>
+
+<table class="admin-table customer-table" id="dataTable0">
+    <thead>
+        <tr>
+            <th>cust_id</th>
+            <th>email_id</th>
+            <th>Name</th>
+            <th>Ph_no</th>
+            <th>Cust_pass</th>
+            <th>Address</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            
+        </tr>
+    </tbody>
+</table>
+<table class="admin-table vendor_table" id="dataTable1">
+    <thead>
+        <tr>
+            <th>Vendor_Id</th>
+            <th>Name</th>
+            <th>Email_id</th>
+            <th>verified</th>
+            <th>Phone_no</th>
+            <th>item_id</th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        </tr>
+    </tbody>
+</table>
+<table class="admin-table product_table" id="dataTable2">
+    <thead>
+        <tr>
+            <th>item_id</th>
+            <th>item_name</th>
+            <th>stock</th>
+            <th>item_price</th>
+            <th>category_id</th>
+    
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        </tr>
+    </tbody>
+</table>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='tablemanage.js') }}"></script>
+<script>
+    const page="admin";
+   async function displayData(query) {
+        // Hide all tables
+        const tables = document.querySelectorAll('.admin-table');
+        tables.forEach(table => {
+            table.classList.remove('active');
+        });
+
+        const tablenum = query.slice(-1);
+
+        var resp= await searchTable(tablenum,"",page);
+        changedataTable(resp["res"],query);
+        
+        const table = document.querySelector("#" + query);
+        table.classList.add('active');
+        // Show the selected table
+    }
+    async function searchit(){
+        
+        var searchQuery = document.getElementById('searchInput').value;
+        
+        data=await searchTable('none',searchQuery,page)
+
+        changedataTable(data["res"],"dataTable" + data["tn"]);
+    }
+
+    // Remove hard-coded data declarations and functions related to managing data, as these will now be handled by Flask
+    function goToHomePage()
+    {
+        window.location.href='/gotohome'
+    }
+    
+    function toggleUserInfo() {
+        // Functionality to toggle user info display
+        alert('Toggling user info');
+    }
+
+
+</script>
+</body>
+</html>

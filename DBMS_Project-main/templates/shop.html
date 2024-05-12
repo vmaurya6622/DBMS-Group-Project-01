@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shopping Site</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to left, #6e3ea5, #44778f);
+        color: #333;
+    }
+    .product-item 
+    {
+        margin-left: 20px; /* Adjust as needed */
+    }
+
+    .header {
+        background-color: #333;
+        color: #fff;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .logo {
+        font-size: 24px;
+    }
+    .user-icon {
+        cursor: pointer;
+        font-size: 20px;
+    }
+    .user-info {
+        position: fixed;
+        top: 0;
+        right: -33.33%; /* Hide initially */
+        background-color: rgba(50,50,50,0.99);
+        border: 1px none #000;
+        padding: 20px;
+        display: none;
+        z-index: 1;
+        border-radius: 0 10px 10px 0;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        animation: slideFromRight 0.3s ease-in-out;
+        width: 33.33%; /* Cover 1/3 of the page */
+        height: 100vh; /* Full height of the viewport */
+    }
+    .user-info.active {
+        display: block;
+        right: 0; /* Show menu */
+    }
+    @keyframes slideFromRight {
+        from {
+            right: -33.33%; /* Hide initially */
+        }
+        to {
+            right: 0; /* Show menu */
+        }
+    }
+    .menu {
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+    }
+    .category {
+        position: relative;
+        color: #fff;
+        cursor: pointer;
+        padding: 15px 0;
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.1);
+        transition: background-color 0.3s ease;
+        border: 1px solid transparent;
+        width: calc(33.33% - 2px); /* Adjusted width */
+        text-align: center;
+        margin-right: -1px;
+    }
+    .category.active {
+        background-color: #333;
+    }
+    .category:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+    .submenu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px solid #fff;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+    .category.active .submenu {
+        display: block;
+        animation: slideDown 0.3s ease-in-out, fadeIn 0.3s ease-in-out;
+    }
+    @keyframes slideDown {
+        from {
+            transform: translateY(-10px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    .product-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 20px;
+    }
+    .product-box {
+            display: inline-block;
+            margin-left: 20px; /* Adjust the margin as needed */
+            margin-bottom: 10px;
+            vertical-align: top;
+            position: relative;
+    }
+    .product-image {
+            width: 200px; /* Adjust image width */
+            height: 200px; /* Adjust image height */
+            background-size: cover;
+            background-position: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+    }
+    .product-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 5px;
+            font-size: 14px; /* Adjust font size */
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+    }
+    .product {
+        width: calc(33.33% - 40px);
+        margin: 20px;
+        border-radius: 5px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+    }
+    .product:hover {
+        transform: translateY(-5px);
+    }
+    .product img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    .home-button {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .home-button:hover {
+        background-color: #555;
+    }
+</style>
+</head>
+<body>
+<div class="header">
+    <div class="home-button" onclick="showAllProducts()">Home</div>
+    <div class="logo">Shopping Site</div>
+    <div class="user-info" onclick="toggleUserInfo()">
+        <p>User Name</p>
+        <p>Email Address</p>
+        <p>Shipping Address</p>
+    </div>
+    <div class="user-icon" onclick="toggleUserInfo()">👤</div>
+</div>
+<div class="menu">
+    <div class="category" onclick="switchCategory('men')" style="background-color: #6495ED;">Men</div>
+    <div class="category" onclick="switchCategory('women')" style="background-color: #FF69B4;">Women</div>
+    <div class="category" onclick="switchCategory('children')" style="background-color: #20B2AA;">Children</div>
+</div>
+
+<div class="product-container" id="productContainer">
+    <div class="product men">
+        <div title="product" class="textbox1" id="tb1">
+            Hello world
+        </div>
+        <img src="https://via.placeholder.com/300x200" alt="Product 1">
+    </div>
+    <div class="product women">
+        <img src="https://via.placeholder.com/300x200" alt="Product 2">
+    </div>
+    <div class="product children">
+        <img src="https://via.placeholder.com/300x200" alt="Product 3">
+    </div>
+    <div class="product men">
+        <img src="https://via.placeholder.com/300x200" alt="Product 4">
+    </div>
+    <div class="product women">
+        <img src="https://via.placeholder.com/300x200" alt="Product 5">
+    </div>
+    <div class="product children">
+        <img src="https://via.placeholder.com/300x200" alt="Product 6">
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+fetchdata()
+    async function fetchdata(){
+        var resp= await $.ajax({
+            type: "POST",
+            url: '/loadshop',  // Flask route for handling button click
+            contentType: "application/json", // Set content type to JSON
+            data:{s:"hello"},
+            success: function(response) {
+            // Handle the response from the Flask backend
+                console.log(response);
+
+            }   
+
+        });
+        var container = document.getElementById("productContainer");
+        container.innerHTML = "";
+
+        // Loop through the tuple data
+        resp.forEach(function(item) {
+            var product = $('<div class="product-box"></div>');
+
+            // Create an image element and set its background
+            var image = $('<div class="product-image"></div>').css('background-image', 'url("https://via.placeholder.com/300x200")');
+
+            // Create a text element and set its content
+            var text = $('<div class="product-text"></div>').text(item[0]);
+
+            // Append image and text to the product box
+            product.append(image, text);
+
+            // Append product box to the container
+            $('#productContainer').append(product);
+
+            // Add click event listener to the product box
+            product.click(function() {
+                productpage(item[1]);
+            });
+        });
+    }
+    async function productpage(itemid) {
+        $.ajax({
+            type: "POST",
+            url: '/product',  // Flask route for handling button click
+            contentType: "application/json", // Set content type to JSON
+            data: JSON.stringify({id: itemid}),
+            success: function(response) {
+                // On success, redirect to the product page
+                console.log(response)
+                window.location.href = response.redirect_url;
+            },
+        });
+    }
+    function toggleUserInfo() {
+        document.querySelector('.user-info').classList.toggle('active');
+    }
+
+    function switchCategory(category) {
+        const products = document.querySelectorAll('.product');
+        products.forEach(product => {
+            if (category === 'men' && product.classList.contains('men')) {
+                product.style.display = 'block';
+            } else if (category === 'women' && product.classList.contains('women')) {
+                product.style.display = 'block';
+            } else if (category === 'children' && product.classList.contains('children')) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
+    }
+
+    function showAllProducts() {
+        console.log("camehome")
+        window.location.href='/gotohome'
+    }
+</script>
+</body>
+</html>

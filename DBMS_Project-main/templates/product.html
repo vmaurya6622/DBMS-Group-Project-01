@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Info</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to left, #6e3ea5, #44778f);
+        color: #333;
+    }
+    .header {
+        background-color: #333;
+        color: #fff;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .logo {
+        font-size: 24px;
+    }
+    .user-icon {
+        cursor: pointer;
+        font-size: 20px;
+    }
+    .home-button {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .home-button:hover {
+        background-color: #555;
+    }
+    .product-info {
+        display: flex;
+        margin: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .product-image {
+        flex: 1;
+    }
+    .product-image img {
+        width: 100%;
+        height: auto;
+        transition: transform 0.3s ease;
+    }
+    .product-image:hover img {
+        transform: scale(1.05);
+    }
+    .product-details {
+        flex: 1;
+        padding: 20px;
+    }
+    .product-details h2 {
+        margin-top: 0;
+        color: #333;
+    }
+    .product-details p {
+        color: #666;
+        margin-bottom: 10px;
+    }
+    .price {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        transition: color 0.3s ease;
+    }
+    .price:hover {
+        color: #f00; /* Change color on hover */
+    }
+    .button-container {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .button {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-right: 10px;
+        transition: background-color 0.3s ease;
+    }
+    .button:hover {
+        background-color: #555;
+    }
+</style>
+</head>
+<body>
+<div class="header">
+    <div class="home-button" onclick="goToHomePage()">Home</div>
+    <div class="logo">Product Info Page</div>
+    <div class="user-icon" onclick="toggleUserInfo()">👤</div>
+</div>
+
+<div class="product-info">
+    <div class="product-image">
+        <img src="https://via.placeholder.com/300x200" alt="Product Image">
+    </div>
+    <div class="product-details">
+        <h2>Name: {{ data["name"] }}</h2>
+        <p>Stock: {{ data["stock"] }}</p>
+        <p>Id: {{ data["id"] }}</p>
+        <p class="price">Price: {{ data["price"] }}</p>
+        <div class="button-container">
+            <button class="button" onclick="buyNow()">Buy Now</button>
+            <button class="button" onclick="addToCart()">Add to Cart</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function goToHomePage()
+    {
+        window.location.href='/gotohome'
+    }
+
+    function toggleUserInfo() {
+        // Functionality to toggle user info display
+        alert('Toggling user info');
+    }
+
+    function buyNow() {
+        alert('Buy Now clicked');
+        // Redirect to checkout page or perform other action
+    }
+
+    function addToCart() {
+        alert('Added to Cart');
+        // Perform action to add item to cart
+    }
+</script>
+</body>
+</html>

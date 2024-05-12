@@ -1,0 +1,5 @@
+ast
+to convert strnig to dict
+
+to send url with some data
+jsonify({'redirect_url': url_for('render_product', data=data)})
